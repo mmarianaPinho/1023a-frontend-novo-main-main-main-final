@@ -3,6 +3,8 @@ import api from "./api/api";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 
+
+
 type ProdutoType = {
   _id: string;
   nome: string;
@@ -16,14 +18,14 @@ function App() {
   const [produtos, setProdutos] = useState<ProdutoType[]>([]);
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
 
-  // 🔹 Atualiza o token quando o usuário faz login/logout
+  //  Atualiza o token quando o usuário faz login/logout
   useEffect(() => {
     const atualizarToken = () => setToken(localStorage.getItem("token"));
     window.addEventListener("storage", atualizarToken);
     return () => window.removeEventListener("storage", atualizarToken);
   }, []);
 
-  // 🔹 Carregar produtos (independente de estar logado)
+  //  Carregar produtos (independente de estar logado)
   useEffect(() => {
     api
       .get("/produtos")
@@ -31,7 +33,7 @@ function App() {
       .catch(() => alert("Erro ao carregar produtos"));
   }, []);
 
-  // 🔹 Adicionar item ao carrinho (só se estiver logado)
+  //  Adicionar item ao carrinho (só se estiver logado)
   const adicionarItemCarrinho = async (produtoId: string) => {
     if (!token) {
       alert("Você precisa estar logado para adicionar produtos ao carrinho!");
@@ -56,13 +58,13 @@ function App() {
     }
   };
 
-  // 🔹 Logout
+  //  Logout
   function handleLogout() {
     localStorage.removeItem("token");
     setToken(null);
   }
 
-  // 🔹 Cadastrar novo produto
+  //  Cadastrar novo produto
   async function cadastrarProduto(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -89,7 +91,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* 🔹 Cabeçalho */}
       <header className="topo">
         {!token ? (
           <button onClick={() => navigate("/login")}>🔐 Fazer Login</button>
@@ -103,7 +104,6 @@ function App() {
 
       <h1>🍰 Produtos Disponíveis</h1>
 
-      {/* 🔹 Formulário de cadastro (só aparece se logado) */}
       {token && (
         <div className="cadastro-produto">
           <h2>📦 Cadastrar Novo Produto</h2>
@@ -117,7 +117,7 @@ function App() {
         </div>
       )}
 
-      {/* 🔹 Lista de produtos (visível pra todos) */}
+      
       <div className="container-produtos">
         {produtos.map((produto) => (
           <div key={produto._id} className="produto">
